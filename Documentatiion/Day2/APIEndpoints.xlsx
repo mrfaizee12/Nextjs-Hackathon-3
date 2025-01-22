@@ -1,0 +1,9 @@
+ API Endpoints
+
+Endpoint	Method	Purpose	Response Example
+
+/products	GET	    Fetches all Nike product details.	{ "id": 1, "name": "Nike Air Max", "price": 150, "stock": 25, "image": "url" }
+
+/orders	    POST	Creates a new order.	{ "orderId": 123, "status": "Order Placed", "paymentStatus": "Paid" }
+
+/shipment	GET	    Fetches shipment status for an order.	{ "shipmentId": 456, "orderId": 123, "status": "In Transit", "ETA": "2 days" }

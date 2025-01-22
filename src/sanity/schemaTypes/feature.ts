@@ -1,0 +1,59 @@
+export default {
+    name:"feature",
+    type:"document",
+    title:"Feature Product",
+    fields:[
+        {
+            name:"status",
+            title:"Status",
+            type:"string"
+        },
+        {
+            name:"name",
+            title:"Name",
+            type:"string"
+        },
+        {
+            name:"category",
+            title:"Category",
+            type:"string"
+        },
+        {
+            name:"image",
+            title:"Image",
+            type:"image"
+        },
+        {
+            name:"price",
+            title:"Price",
+            type:"number"
+        },
+        {
+            name:"inventory",
+            title:"Inventory",
+            type:"number"   
+        },
+        {
+            name:"description",
+            title:"Description",
+            type:"string"
+        },
+        {
+            name:"colors",
+            title:"Colors",
+            type:"array",
+            of: [{type:'string'}]
+        },
+        {
+            name:"size",
+            title:"Size",
+            type:"array",
+            of: [{type:'string'}]
+        },
+        {
+            name:"id",
+            title:"ID",
+            type:"string"   
+        },
+    ]
+}
