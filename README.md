@@ -1,15 +1,13 @@
-### Pending Features
-Due to the project deadline, certain functionalities are still under development. These include:
-- Filtering and Searching functionality for enhanced user experience.
-- Order placement and shipment tracking system.
-- Dynamic routing for seamless navigation and better usability.
+Pending Features:
+Due to the project deadline, the following functionalities are still under development:
 
-Work is currently in progress on these aspects, and updates will be shared soon.
+Order Placement and Shipment Tracking: Work is ongoing to implement an order placement system along with shipment tracking for better user convenience.
+Updates will be shared soon as this feature is integrated.
 
-### Completed Features
-The following features have been successfully implemented:
-- Dynamic routing with "Add to Cart" functionality.
-- Wishlist integration for saving preferred items.
-- User feedback and review system.
+Completed Features:
+The following features have been successfully implemented and are live:
 
-Several challenges were encountered during the development, such as [mention specific error examples briefly], which were resolved by [briefly describe resolution strategies].
+Filtering and Searching: Users can now filter and search for products efficiently, enhancing the overall user experience.
+Dynamic Routing with 'Add to Cart' functionality: Users can navigate seamlessly between pages while adding products to their cart.
+Wishlist Integration: Users can save their favorite items for later purchase.
+User Feedback and Review System: Customers can now leave feedback and rate products based on their experience.
