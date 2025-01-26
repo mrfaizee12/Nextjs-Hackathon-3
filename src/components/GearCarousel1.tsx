@@ -38,8 +38,8 @@ export function GearCarousel1() {
               </Card>
             </div>
                 <div className=" flex justify-between mx-2 mt-2">
-                  <h1 className="font-semibold text-sm">{item.name}</h1>
-                    <h2 className="font-semibold text-sm">${item.price}</h2>
+                  <h1 className="font-semibold text-sm hover:text-[#9E3500]">{item.name}</h1>
+                    <h2 className="font-semibold text-sm hover:text-[#9E3500]">${item.price}</h2>
                 </div>
                 <h3 className="ml-2 text-sm">{item.category}</h3>
                 </Link>

@@ -35,7 +35,7 @@ export default function HeroProduct({ params }: { params: Promise<{ id: string }
 
     useEffect(() => {
         const fetchData = async () => {
-            const id = (await params).id;
+            const id = (await params).id;  // Params se id le rahe hain
             setID(id);
 
             const ListingData = async () => {
@@ -46,7 +46,7 @@ export default function HeroProduct({ params }: { params: Promise<{ id: string }
             setItem(product);
         };
         fetchData();
-    }, []);
+    }, [params]);  // Dependency array mein 'params' ko add kiya gaya hai
 
     useEffect(() => {
         const savedReviews = localStorage.getItem(`reviews-${ID}`);
@@ -85,7 +85,7 @@ export default function HeroProduct({ params }: { params: Promise<{ id: string }
         setReviews(updatedReviews);
     };
 
-    const { addToCart,addToWishlist } = useCart();
+    const { addToCart, addToWishlist } = useCart();
 
     return (
         <main className="max-w-[900px] p-4 mx-auto my-20">
@@ -99,7 +99,7 @@ export default function HeroProduct({ params }: { params: Promise<{ id: string }
                             <h1 className="text-lg font-semibold mt-10">MRP: $ {data.price}</h1>
                             <h2 className="text-lg text-[#757575]">incl. of taxes</h2>
                             <h2 className="text-lg text-[#757575]">(Also includes all applicable duties)</h2>
-                            
+
                             <section>
                                 <div className="flex justify-between mt-6">
                                     <h1 className="font-semibold text-sm">Select Size</h1>
@@ -117,7 +117,7 @@ export default function HeroProduct({ params }: { params: Promise<{ id: string }
                                     ))}
                                 </div>
                                 <div className="flex gap-3 mt-4">
-                                    <Button onClick={()=>addToWishlist(data)} className="bg-white hover:bg-[#a7a3a3]">
+                                    <Button onClick={() => addToWishlist(data)} className="bg-white hover:bg-[#a7a3a3]">
                                         <Image src={"/header/heart.png"} alt={"heart"} width={24} height={24} />
                                     </Button>
                                     <Button onClick={() => addToCart(data)} className="bg-white hover:bg-[#a7a3a3]">
@@ -160,7 +160,7 @@ export default function HeroProduct({ params }: { params: Promise<{ id: string }
                                             {"★".repeat(review.rating)}
                                             {"☆".repeat(5 - review.rating)}
                                         </div>
-                                        <Button onClick={() => handleDeleteReview(index)} className="mt-2  text-black p-1 bg-white hover:text-white hover:bg-black">
+                                        <Button onClick={() => handleDeleteReview(index)} className="mt-2 text-black p-1 bg-white hover:text-white hover:bg-black">
                                             delete
                                         </Button>
                                     </div>
