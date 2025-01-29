@@ -1,94 +1,104 @@
-import Image from "next/image";
+"use client";
+import { useCart } from "@/context/context";
+import { useState } from "react";
 
-function CheckoutPage() {
+export default function CheckoutPage() {
+  const { cart } = useCart();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    const formData = new FormData(e.target as HTMLFormElement);
+
+    // Create order data
+    const orderData = {
+      name: formData.get("name")?.toString().trim(),
+      email: formData.get("email")?.toString().trim(),
+      phone: formData.get("phone")?.toString().trim(),
+      address: formData.get("address")?.toString().trim(),
+      cartItems: cart.map((item) => ({
+        _id: item._id,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity ?? 1,
+      })),
+      total: cart.reduce((acc, item) => acc + item.price * (item.quantity ?? 1), 0),
+    };
+
+    if (!orderData.name || !orderData.email || !orderData.phone || !orderData.address) {
+      alert("Please fill all required fields.");
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/createOrder", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(orderData),
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+        alert("Order placed successfully!");
+        console.log("Order saved to Sanity:", responseData.order);
+      } else {
+        const errorData = await response.json();
+        alert(`Failed to place the order! ${errorData.error || ""}`);
+      }
+    } catch (error) {
+      console.error("Error placing order:", error);
+      alert("Something went wrong!");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="bg-gray-100 min-h-screen font-poppins">
-
       <main className="py-8 px-4">
-        <div className="max-w-7xl mx-auto grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-xl md:text-2xl font-bold mb-4">How would you like to get your order?</h2>
-            <p className="text-sm sm:text-base text-gray-600 mb-4">
-              Customs regulation for India requires a copy of the recipient&apos;s KYC...{" "}
-              <a href="#" className="text-blue-500 underline">Learn More</a>
-            </p>
+        <form onSubmit={handleSubmit}>
+          <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+            <h2 className="text-2xl font-bold mb-6">Checkout</h2>
 
-            <div className="mb-6">
-              <label className="flex items-center space-x-2">
-                <input type="radio" name="delivery-method" className="form-radio" />
-                <span>Deliver it</span>
-              </label>
+            {/* Inputs */}
+            <div className="mb-4">
+              <input type="text" name="name" placeholder="Full Name" required className="input w-full" />
+            </div>
+            <div className="mb-4">
+              <input type="email" name="email" placeholder="Email" required className="input w-full" />
+            </div>
+            <div className="mb-4">
+              <input type="tel" name="phone" placeholder="Phone Number" required className="input w-full" />
+            </div>
+            <div className="mb-4">
+              <textarea name="address" placeholder="Address" required className="input w-full"></textarea>
             </div>
 
-            <form>
-              <h3 className="text-lg font-semibold mb-4">Enter your name and address:</h3>
-              <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <input type="text" placeholder="First Name" className="input w-full" />
-                <input type="text" placeholder="Last Name" className="input w-full" />
+            {/* Order Summary */}
+            <div className="mb-4">
+              <h3 className="text-xl font-semibold">Order Summary</h3>
+              {cart.map((item) => (
+                <div key={item._id} className="flex justify-between my-2">
+                  <p>{item.name} x {item.quantity ?? 1}</p>
+                  <p>₹{(item.price * (item.quantity ?? 1)).toFixed(2)}</p>
+                </div>
+              ))}
+              <div className="flex justify-between font-bold mt-4">
+                <p>Total:</p>
+                <p>₹{cart.reduce((acc, item) => acc + item.price * (item.quantity ?? 1), 0).toFixed(2)}</p>
               </div>
-              <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <input type="text" placeholder="Address Line 1" className="input w-full" />
-                <input type="text" placeholder="Address Line 2" className="input w-full" />
-              </div>
-              <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <input type="text" placeholder="Postal Code" className="input w-full" />
-                <input type="text" placeholder="Locality" className="input w-full" />
-              </div>
-              <div className="mb-4">
-                <select className="input w-full">
-                  <option>State/Territory</option>
-                  <option>India</option>
-                </select>
-              </div>
-              <div className="flex items-center space-x-2 mb-6">
-                <input type="checkbox" id="save-address" className="form-checkbox" />
-                <label htmlFor="save-address">Save this address to my profile</label>
-              </div>
+            </div>
 
-              <h3 className="text-lg font-semibold mb-4">What&apos;s your contact information?</h3>
-              <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <input type="email" placeholder="Email" className="input w-full" />
-                <input type="tel" placeholder="Phone Number" className="input w-full" />
-              </div>
-              <h3 className="text-lg font-semibold mb-4">What&apos;s your PAN?</h3>
-              <input type="text" placeholder="PAN" className="input w-full mb-4" />
-              <div className="flex items-center space-x-2 mb-6">
-                <input type="checkbox" id="save-pan" className="form-checkbox" />
-                <label htmlFor="save-pan">Save PAN details to the profile</label>
-              </div>
-
-              <button className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800">
-                Continue
-              </button>
-            </form>
+            {/* Submit Button */}
+            <button type="submit" className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800" disabled={isLoading}>
+              {isLoading ? "Placing Order..." : "Place Order"}
+            </button>
           </div>
-
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-xl md:text-2xl font-bold mb-4">Order Summary</h2>
-            <div className="mb-6">
-              <p className="text-sm sm:text-base">Subtotal: <span className="font-bold">₹ 20,890.00</span></p>
-              <p className="text-sm sm:text-base">Delivery/Shipping: <span className="font-bold">Free</span></p>
-              <p className="text-sm sm:text-base">Total: <span className="font-bold">₹ 20,890.00</span></p>
-              <small className="text-gray-500">
-                (The total reflects the price of your order, including duties and taxes.)
-              </small>
-            </div>
-            <div>
-              <p className="text-gray-600 mb-4">Arrives Mon, 27 Mar - Wed, 12 Apr</p>
-              <div className="flex items-center mb-4">
-                <Image src={'/featured/shoe10.png'} alt="Product Image" width={60} height={60} className="rounded-md" />
-                <p className="ml-4 text-sm">Nike Dri-FIT ADV TechKnit Ultra Men&apos;s Short-Sleeve Running Top</p>
-              </div>
-              <div className="flex items-center">
-                <Image src={'/featured/shoe9.png'} alt="Product Image" width={60} height={60} className="rounded-md" />
-                <p className="ml-4 text-sm">Nike Air Max 97 SE Men&apos;s Shoes</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        </form>
       </main>
     </div>
   );
 }
-
-export default CheckoutPage;
