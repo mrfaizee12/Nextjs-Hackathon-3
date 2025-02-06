@@ -5,6 +5,7 @@ import { useCart } from "@/context/context"
 import { client } from "@/sanity/lib/client"
 import { urlFor } from "@/sanity/lib/image"
 import Image from "next/image"
+import Link from "next/link"
 import { ChangeEvent, FormEvent, useEffect, useState } from "react"
 
 export interface Products {
@@ -124,7 +125,7 @@ export default function HeroProduct({ params }: { params: Promise<{ id: string }
                                         <Image src={"/header/cart.png"} alt={"cart"} width={24} height={24} />
                                     </Button>
                                 </div>
-                                <Button className="bg-black hover:bg-white hover:text-black mt-4 w-72 md:w-96 rounded-full h-14">Proceed To Checkout</Button>
+                               <Link href={'/cart'}><Button className="bg-black hover:bg-white hover:text-black mt-4 w-72 md:w-96 rounded-full h-14">Go to Cart page</Button></Link> 
                             </section>
                         </div>
                     </div>

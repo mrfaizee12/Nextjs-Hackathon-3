@@ -13,37 +13,42 @@ type CartItem = {
   name: string;
   price: number;
   quantity: number;
+  image: string;
 };
 
 export async function POST(req: Request) {
   try {
-    const { name, email, phone, address, cartItems, total }: {
-      name: string;
+    const { customerName, email, phone, address, city, cartItems, total }: {
+      customerName: string;
       email: string;
       phone: string;
       address: string;
+      city: string;
       cartItems: CartItem[];
       total: number;
     } = await req.json();
 
-    if (!name || !email || !phone || !address || !cartItems.length) {
+    if (!customerName || !email || !phone || !address || !city || !cartItems.length) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
     // Create order document
     const orderDoc = {
       _type: "order",
-      customerName: name,
+      customerName,
       email,
       phone,
       address,
+      city,
       total,
       items: cartItems.map((item) => ({
         _type: "object",
         name: item.name,
         price: item.price,
         quantity: item.quantity,
+        image: item.image,
       })),
+      status: 'pending',  // default order status
     };
 
     const result = await sanityClient.create(orderDoc);

@@ -5,12 +5,14 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Context from "@/context/context";
 import { Toaster } from "sonner";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
   weight: "100 900",
 });
+
 const geistMono = localFont({
   src: "./fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
@@ -29,16 +31,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Context>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Navbar/>
-        {children}
-        <Toaster />
-        <Footer/>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <Context>
+          {/* Clerk Provider to handle authentication */}
+          <ClerkProvider>
+            <Navbar />
+            <main>{children}</main>
+            <Toaster />
+            <Footer />
+          </ClerkProvider>
+        </Context>
       </body>
-      </Context>
     </html>
   );
 }
