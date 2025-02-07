@@ -6,6 +6,7 @@ import { urlFor } from "@/sanity/lib/image";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { createPaymentIntent } from "./action";
+import Link from "next/link";
 
 // Stripe configuration
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string);
@@ -188,26 +189,33 @@ export default function CheckoutPage() {
     );
   }
 
-  // Inside the CheckoutPage component
+  return (
+    <div className="bg-gray-100 min-h-screen font-poppins">
+      <main className="py-8 px-4">
+        <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+          <h2 className="text-2xl font-bold mb-6">Payment</h2>
 
-return (
-  <div className="bg-gray-100 min-h-screen font-poppins">
-    <main className="py-8 px-4">
-      <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
-        <h2 className="text-2xl font-bold mb-6">Payment</h2>
+          {/* Conditionally render PaymentForm only when orderData is not null */}
+          {orderData ? (
+            <Elements stripe={stripePromise} options={{ clientSecret }}>
+              <PaymentForm orderData={orderData} />
+            </Elements>
+          ) : (
+            <p>Loading...</p> // Optionally show a loading message
+          )}
 
-        {/* Conditionally render PaymentForm only when orderData is not null */}
-        {orderData ? (
-          <Elements stripe={stripePromise} options={{ clientSecret }}>
-            <PaymentForm orderData={orderData} />
-          </Elements>
-        ) : (
-          <p>Loading...</p> // Optionally show a loading message
-        )}
-      </div>
-    </main>
-  </div>
-);
+          {/* Back to Shop Button */}
+          <div className="mt-6">
+            <Link href="/new">
+              <button className="w-full bg-gray-500 text-white py-2 rounded-lg hover:bg-gray-600">
+                Back to Shop
+              </button>
+            </Link>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
 }
 
 function PaymentForm({ orderData }: { orderData: OrderData }) {
