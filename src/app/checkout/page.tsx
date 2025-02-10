@@ -206,8 +206,15 @@ export default function CheckoutPage() {
 
           {/* Back to Shop Button */}
           <div className="mt-6">
-            <Link href="/new">
+            <Link href="/genrate-tracking">
               <button className="w-full bg-gray-500 text-white py-2 rounded-lg hover:bg-gray-600">
+                Go to Taken Page
+              </button>
+            </Link>
+          </div>
+          <div className="mt-6">
+            <Link href="/new">
+              <button className="w-full bg-gray-700 text-white py-2 rounded-lg hover:bg-gray-600">
                 Back to Shop
               </button>
             </Link>
