@@ -6,20 +6,6 @@ import { Address, Rate, trackingObjType } from '@/type';
 import { cartProductsWhichCanBeShipped } from '@/data';
 
 
- interface Package {
-  weight: {
-    value: number;
-    unit: string;
-  };
-  dimensions: {
-    height: number;
-    width: number;
-    length: number;
-    unit: string;
-  };
-}
-
-
 function Shipement() {
 
 
@@ -57,7 +43,7 @@ function Shipement() {
 
         shipeToAddress,
         // packages: enhancedCart,
-        packages: cartProductsWhichCanBeShipped.map((product:Package) => ({
+        packages: cartProductsWhichCanBeShipped.map((product:any) => ({
           weight: product.weight,
           dimensions: product.dimensions,
         })),
