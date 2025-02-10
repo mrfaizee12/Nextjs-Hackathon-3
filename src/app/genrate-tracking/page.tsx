@@ -43,9 +43,9 @@ function Shipement() {
 
         shipeToAddress,
         // packages: enhancedCart,
-        packages: cartProductsWhichCanBeShipped.map((product:any) => ({
-          weight: product.weight,
-          dimensions: product.dimensions,
+        packages: cartProductsWhichCanBeShipped.map((item:any) => ({
+          weight: item.weight,
+          dimensions: item.dimensions,
         })),
       })
 
